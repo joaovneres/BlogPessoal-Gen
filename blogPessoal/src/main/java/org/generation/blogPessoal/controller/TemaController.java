@@ -32,24 +32,24 @@ import org.generation.blogPessoal.repository.TemaRepository;
 		}
 		
 		@GetMapping("/{id}")
-		public ResponseEntity<Tema> getById(@PathVariable long id){
+		public ResponseEntity<Tema> getById(@Valid @PathVariable long id){
 			return repository.findById(id).map(resp -> ResponseEntity.ok(resp))
 					.orElse(ResponseEntity.notFound().build());
 		}
 		
 		@GetMapping("/nome/{nome}")
-		public ResponseEntity<List<Tema>> getByName(@PathVariable String nome){
+		public ResponseEntity<List<Tema>> getByName(@Valid @PathVariable String nome){
 			return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(nome));
 		}
 		
 		@PostMapping
-		public ResponseEntity<Tema> post (@RequestBody Tema tema){
+		public ResponseEntity<Tema> post (@Valid @RequestBody Tema tema){
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(repository.save(tema));
 		}
 
 		@PutMapping
-		public ResponseEntity<Tema> put (@RequestBody Tema tema){
+		public ResponseEntity<Tema> put (@Valid @RequestBody Tema tema){
 			return ResponseEntity.ok(repository.save(tema));				
 		}
 		
