@@ -9,9 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "tb_tema")
@@ -19,36 +19,59 @@ public class Tema {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long idTema;
 
-	@NotNull
-	private String descricao;
+	@NotNull(message = "Digite o nome do tema.")
+	private String nomeTema;
 
-	@OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("tema")
-	private List<Postagem> postagem;
+	@NotNull(message = "Dê uma descrição ao tema.")
+	private String descricaoTema;
 
-	public long getId() {
-		return id;
+	@OneToMany(mappedBy = "oTema", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("oTema")
+	private List<Postagem> oPostagem;
+
+	public Tema(Long idTema, @NotNull(message = "Digite o nome do tema.") String nomeTema,
+			@NotNull(message = "Dê uma descrição ao tema.") String descricaoTema, List<Postagem> oPostagem) {
+		this.idTema = idTema;
+		this.nomeTema = nomeTema;
+		this.descricaoTema = descricaoTema;
+		this.oPostagem = oPostagem;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public Tema() {
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNomeTema() {
+		return nomeTema;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setNomeTema(String nomeTema) {
+		this.nomeTema = nomeTema;
 	}
 
-	public List<Postagem> getPostagem() {
-		return postagem;
+	public Long getIdTema() {
+		return idTema;
 	}
 
-	public void setPostagem(List<Postagem> postagem) {
-		this.postagem = postagem;
+	public void setIdTema(Long idTema) {
+		this.idTema = idTema;
 	}
+
+	public String getDescricaoTema() {
+		return descricaoTema;
+	}
+
+	public void setDescricaoTema(String descricaoTema) {
+		this.descricaoTema = descricaoTema;
+	}
+
+	public List<Postagem> getoPostagem() {
+		return oPostagem;
+	}
+
+	public void setoPostagem(List<Postagem> oPostagem) {
+		this.oPostagem = oPostagem;
+	}
+
 }

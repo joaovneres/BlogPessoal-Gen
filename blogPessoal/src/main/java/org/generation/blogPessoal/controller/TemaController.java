@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.generation.blogPessoal.model.Tema;
 import org.generation.blogPessoal.repository.TemaRepository;
 
@@ -32,29 +34,29 @@ import org.generation.blogPessoal.repository.TemaRepository;
 		}
 		
 		@GetMapping("/{id}")
-		public ResponseEntity<Tema> getById(@PathVariable long id){
-			return repository.findById(id).map(resp -> ResponseEntity.ok(resp))
+		public ResponseEntity<Tema> getById(@PathVariable Long idTema){
+			return repository.findById(idTema).map(resp -> ResponseEntity.ok(resp))
 					.orElse(ResponseEntity.notFound().build());
 		}
 		
 		@GetMapping("/nome/{nome}")
-		public ResponseEntity<List<Tema>> getByName(@PathVariable String nome){
-			return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(nome));
+		public ResponseEntity<List<Tema>> getByDesc(@PathVariable String descricaoTema){
+			return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(descricaoTema));
 		}
 		
 		@PostMapping
-		public ResponseEntity<Tema> post (@RequestBody Tema tema){
+		public ResponseEntity<Tema> post (@Valid @RequestBody Tema oTema){
 			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(repository.save(tema));
+					.body(repository.save(oTema));
 		}
 
 		@PutMapping
-		public ResponseEntity<Tema> put (@RequestBody Tema tema){
-			return ResponseEntity.ok(repository.save(tema));				
+		public ResponseEntity<Tema> put (@Valid @RequestBody Tema oTema){
+			return ResponseEntity.ok(repository.save(oTema));				
 		}
 		
 		@DeleteMapping("/{id}")
-		public void delete(@PathVariable long id) {
-			repository.deleteById(id);
+		public void delete(@PathVariable Long idTema) {
+			repository.deleteById(idTema);
 		}
 }
