@@ -34,25 +34,44 @@ import org.generation.blogPessoal.repository.TemaRepository;
 		}
 		
 		@GetMapping("/{id}")
+<<<<<<< HEAD
 		public ResponseEntity<Tema> getById(@PathVariable Long idTema){
 			return repository.findById(idTema).map(resp -> ResponseEntity.ok(resp))
+=======
+		public ResponseEntity<Tema> getById(@Valid @PathVariable long id){
+			return repository.findById(id).map(resp -> ResponseEntity.ok(resp))
+>>>>>>> 9d9e73770394fac00f332b425ba832cd32337e13
 					.orElse(ResponseEntity.notFound().build());
 		}
 		
 		@GetMapping("/nome/{nome}")
+<<<<<<< HEAD
 		public ResponseEntity<List<Tema>> getByDesc(@PathVariable String descricaoTema){
 			return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(descricaoTema));
 		}
 		
 		@PostMapping
 		public ResponseEntity<Tema> post (@Valid @RequestBody Tema oTema){
+=======
+		public ResponseEntity<List<Tema>> getByName(@Valid @PathVariable String nome){
+			return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(nome));
+		}
+		
+		@PostMapping
+		public ResponseEntity<Tema> post (@Valid @RequestBody Tema tema){
+>>>>>>> 9d9e73770394fac00f332b425ba832cd32337e13
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(repository.save(oTema));
 		}
 
 		@PutMapping
+<<<<<<< HEAD
 		public ResponseEntity<Tema> put (@Valid @RequestBody Tema oTema){
 			return ResponseEntity.ok(repository.save(oTema));				
+=======
+		public ResponseEntity<Tema> put (@Valid @RequestBody Tema tema){
+			return ResponseEntity.ok(repository.save(tema));				
+>>>>>>> 9d9e73770394fac00f332b425ba832cd32337e13
 		}
 		
 		@DeleteMapping("/{id}")
