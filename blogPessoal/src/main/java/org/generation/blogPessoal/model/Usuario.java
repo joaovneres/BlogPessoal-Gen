@@ -46,13 +46,11 @@ public class Usuario {
 	public Usuario(Long idUsuario,
 			@NotNull(message = "O nome é obrigatório!") @Size(min = 2, max = 100) String nomeUsuario,
 			@NotNull(message = "O atributo email é Obrigatório!") @Email(message = "O email deve ser válido!") String emailUsuario,
-			@NotNull(message = "A senha é obrigatória!") @Size(min = 8, max = 100) String senhaUsuario,
-			List<Postagem> oPostagem) {
+			@NotNull(message = "A senha é obrigatória!") @Size(min = 8, max = 100) String senhaUsuario) {
 		this.idUsuario = idUsuario;
 		this.nomeUsuario = nomeUsuario;
 		this.emailUsuario = emailUsuario;
 		this.senhaUsuario = senhaUsuario;
-		this.oPostagem = oPostagem;
 	}
 
 	// metodo construtor vazio
@@ -90,13 +88,4 @@ public class Usuario {
 	public void setSenhaUsuario(String senhaUsuario) {
 		this.senhaUsuario = senhaUsuario;
 	}
-
-	public List<Postagem> getoPostagem() {
-		return oPostagem;
-	}
-
-	public void setoPostagem(List<Postagem> oPostagem) {
-		this.oPostagem = oPostagem;
-	}
-
 }

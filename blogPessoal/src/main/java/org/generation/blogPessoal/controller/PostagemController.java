@@ -1,6 +1,8 @@
 package org.generation.blogPessoal.controller;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -20,44 +22,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController // informar que esta classe é uma controller
-@RequestMapping("/postagens") // o que aparece lá em cima (Criando um endpoint)
-@CrossOrigin(origins = "*") // esta classe aceita requisição de qualquer origem
+@RequestMapping("/postagem") // o que aparece lá em cima (Criando um endpoint)
+@CrossOrigin(origins = "*", allowedHeaders = "*") // esta classe aceita requisição de qualquer origem
 public class PostagemController {
 
-	@Autowired // por conta da debaixo ser uma interface, este comando força que acessemos,
-				// mesmo não instanciando
-				// transferência de responsabilidade, injeção de depêndencia
+	@Autowired
 	private PostagemRepository repository;
 
-	@GetMapping
-	public ResponseEntity<List<Postagem>> listarPostagem() {
-		return ResponseEntity.ok(repository.findAll());
+	// Cadastar postagem (tela)
+	@PostMapping("/cadastrar")
+	public ResponseEntity<Postagem> cadastrar(@Valid @RequestBody Postagem oPostagem) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(oPostagem));
 	}
 
-	@GetMapping("/{idPostagem}")
-	public ResponseEntity<Postagem> buscarId(@PathVariable Long idPostagem){ //@PathVariable pega a variavel do caminho da url
-		return repository.findById(idPostagem)
-				.map(resp -> ResponseEntity.ok(resp)) //caso encontre
-				.orElse(ResponseEntity.notFound().build()); //caso não encontre
+	// Atualizar alguma postagem
+	@PutMapping("/atualizar")
+	public ResponseEntity<Postagem> alterar(@Valid @RequestBody Postagem oPostagem) {
+		return ResponseEntity.ok(repository.save(oPostagem));
 	}
-	
-	@GetMapping("/titulo/{titulo}") //criamos um novo endpoint
-	public ResponseEntity<List<Postagem>> buscarTitulo(@PathVariable String tituloPostagem){
-		return ResponseEntity.ok(repository.findAllByTituloContainingIgnoreCase(tituloPostagem));
-	}
-	
-	@PostMapping
-	public ResponseEntity<Postagem> inserirPostagem(@Valid @RequestBody Postagem oPostagem){
-		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(oPostagem));	
-	}
-	
-	@PutMapping
-	public ResponseEntity<Postagem> atualizarPostagem(@Valid @RequestBody Postagem oPostagem){
-		return ResponseEntity.status(HttpStatus.OK).body(repository.save(oPostagem));
-	}
-	
-	@DeleteMapping("/{idPostagem}")
-	public void delete(@PathVariable Long idPostagem) {
+
+	// Deletar um postagem
+	@DeleteMapping("/deletar/{idPostagem}")
+	public void deletar(@PathVariable Long idPostagem) {
 		repository.deleteById(idPostagem);
+	}
+
+	// Consultar postagem pelo id
+	@GetMapping("/consultar/{idPostagem}")
+	public ResponseEntity<Postagem> buscarId(@PathVariable Long idPostagem) {
+		return repository.findById(idPostagem).map(resp -> ResponseEntity.ok(resp))
+				.orElse(ResponseEntity.notFound().build());
+	}
+
+	// Consultar postagem pela data
+	@GetMapping("/consultar/{dataPostagem}")
+	public ResponseEntity<Optional<List<Postagem>>> buscarTema(@PathVariable Date dataPostagem) {
+		return ResponseEntity.ok(repository.findByDataPostagem(dataPostagem));
+	}
+
+	// Listar todas as postagens
+	@GetMapping("/consultar/all")
+	public ResponseEntity<List<Postagem>> listar() {
+		return ResponseEntity.ok(repository.findAll());
 	}
 }
